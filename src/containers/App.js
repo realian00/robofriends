@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import CardList from "../components/CardList";
 import SearchBox from '../components/SearchBox'
 import Scroll from '../components/Scroll'
+import ErrorBoundry from "../components/ErrorBoundry";
+
 // import { robots } from './robots'
 
 
@@ -16,8 +18,8 @@ class App extends Component {
 
     componentDidMount() {
         fetch('https://jsonplaceholder.typicode.com/users')
-        .then(response => response.json())
-        .then(users => this.setState({robots: users}))    
+            .then(response => response.json())
+            .then(users => this.setState({ robots: users }))
     }
 
 
@@ -29,16 +31,18 @@ class App extends Component {
         const filteredRobots = this.state.robots.filter(robot => {
             return robot.name.toLowerCase().includes(this.state.searchfield.toLowerCase())
         })
-            return (
-                <div className="tc">
-                    <h1>RoboFriends</h1>
-                    <SearchBox searchChange={this.onSearchChange} />
-                    <Scroll>
+        return (
+            <div className="tc">
+                <h1>RoboFriends</h1>
+                <SearchBox searchChange={this.onSearchChange} />
+                <Scroll>
+                    <ErrorBoundry>
                         <CardList robots={filteredRobots} />
-                    </Scroll>
-                </div>
-            )
-        }
+                    </ErrorBoundry>
+                </Scroll>
+            </div>
+        )
+    }
 }
 
 export default App
